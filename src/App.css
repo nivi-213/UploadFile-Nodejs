@@ -1,33 +1,18 @@
-/* .App{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 30px;
-  flex-direction: column;
-}
-.formstyle{
+/* App.css */
+.formStyle {
+  max-width: 600px;
+  margin: 0 auto;
   padding: 20px;
-  border: 20px;
-  width: 35%;
-  text-align: center;
-}
-.form-control{
-  border-color: black;
-} */
-.App {
-  text-align: center;
-  margin-top: 50px;
+  background: #f7f7f7;
+  border-radius: 8px;
 }
 
-.form-container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  background-color: #f8f9fa;
-}
-
-h4 {
+.uploaded h4 {
   margin-bottom: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
