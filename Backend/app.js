@@ -80,8 +80,7 @@ app.use("/files", express.static("files"));
 app.use(express.json());
 app.use(cors());
 
-const mongourl =
-  "mongodb+srv://uploadfile:uploadfile@cluster0.qzfftdf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const mongourl = "mongodb+srv://uploadfile:uploadfile@cluster0.qzfftdf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(mongourl)
@@ -121,6 +120,40 @@ app.post("/upload-files", upload.single("file"), async (req, res) => {
   }
 });
 
+app.put("/update-file/:id", upload.single("file"), async (req, res) => {
+  const { id } = req.params;
+  const title = req.body.title;
+
+  try {
+    const fileRecord = await PdfSchema.findById(id);
+
+    if (!fileRecord) {
+      return res.status(404).send({ status: "error", message: "File not found" });
+    }
+
+    const updateData = { title: title };
+
+    if (req.file) {
+      const newFileName = req.file.filename;
+      const oldFilePath = `./files/${fileRecord.pdf}`;
+
+      // Delete the old file
+      fs.unlink(oldFilePath, (err) => {
+        if (err) {
+          console.error("Error deleting old file: ", err);
+        }
+      });
+
+      updateData.pdf = newFileName;
+    }
+
+    await PdfSchema.findByIdAndUpdate(id, updateData);
+    res.send({ status: "ok" });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
+});
+
 app.get("/get-files", async (req, res) => {
   try {
     const data = await PdfSchema.find({});
@@ -129,42 +162,6 @@ app.get("/get-files", async (req, res) => {
     res.json({ status: "error", message: error.message });
   }
 });
-
-
-
-app.put("/edit-file/:id", upload.single("file"), async (req, res) => {
-  const { id } = req.params;
-  const { title } = req.body;
-
-  try {
-    let updatedData = {};
-
-    // Check if a new file is uploaded
-    if (req.file) {
-      updatedData.pdf = req.file.filename;
-    }
-
-    // Check if title is provided
-    if (title) {
-      updatedData.title = title;
-    }
-
-    // Update the document
-    const updatedFile = await PdfSchema.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
-
-    if (!updatedFile) {
-      return res.status(404).send({ status: "error", message: "File not found" });
-    }
-
-    res.send({ status: "ok", data: updatedFile });
-  } catch (error) {
-    res.json({ status: "error", message: error.message });
-  }
-});
-
-
 
 app.delete("/delete-file/:id", async (req, res) => {
   const { id } = req.params;

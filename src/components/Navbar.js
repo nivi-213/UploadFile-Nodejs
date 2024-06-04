@@ -23,7 +23,7 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item ">
-              <a className="nav-link mr-5" href="/">
+              <a className="nav-link mr-5" href="/upload">
                 UploadFile <span className="sr-only">(current)</span>
               </a>
             </li>

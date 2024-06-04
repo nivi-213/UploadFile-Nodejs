@@ -1,11 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const PdfDetailsSchema = new mongoose.Schema(
-  {
-    pdf: String,
-    title: String,
+const PdfDetailsSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true
   },
-  { collection: "PdfDetails" }
-);
+  pdf: {
+    type: String,
+    required: true
+  }
+});
 
-mongoose.model("PdfDetails", PdfDetailsSchema);
+mongoose.model('PdfDetails', PdfDetailsSchema);
